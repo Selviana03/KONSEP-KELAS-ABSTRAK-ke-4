@@ -1,0 +1,104 @@
+import 'dart:math';
+
+class MathUtils {
+  // 1. Faktorial
+  static int factorial(int n) {
+    if (n <= 1) return 1;
+    return n * factorial(n - 1);
+  }
+
+  // 2. Cek Bilangan Prima
+  static bool isPrime(int n) {
+    if (n < 2) return false;
+    for (int i = 2; i <= sqrt(n); i++) {
+      if (n % i == 0) return false;
+    }
+    return true;
+  }
+
+  // 3. Membulatkan double ke desimal tertentu
+  static double roundDouble(double val, int places) {
+    num mod = pow(10, places);
+    return ((val * mod).round().toDouble() / mod);
+  }
+
+  // 4. Bilangan acak dalam range [min, max]
+  static int randomInt(int min, int max) => Random().nextInt(max - min + 1) + min;
+  static double randomDouble(double min, double max) => min + Random().nextDouble() * (max - min);
+
+  // 5. Menghitung Rata-rata dari List
+  static double rataRata(List<num> angka) {
+    if (angka.isEmpty) return 0.0;
+    return angka.reduce((a, b) => a + b) / angka.length;
+  }
+
+  // 6. Menghitung Median dari List
+  static double median(List<num> angka) {
+    if (angka.isEmpty) return 0.0;
+    List<num> sorted = List.from(angka)..sort();
+    int mid = sorted.length ~/ 2;
+    if (sorted.length.isOdd) {
+      return sorted[mid].toDouble();
+    } else {
+      return (sorted[mid - 1] + sorted[mid]) / 2;
+    }
+  }
+}
+
+abstract class Pekerja {
+  String nama;
+  Pekerja(this.nama);
+
+  void bekerja();
+
+  void info() => print("Nama pekerja: $nama");
+}
+
+class Programmer extends Pekerja {
+  Programmer(String nama) : super(nama);
+  @override
+  void bekerja() => print("$nama sedang menulis kode.");
+}
+
+class Dokter extends Pekerja {
+  Dokter(String nama) : super(nama);
+  @override
+  void bekerja() => print("$nama sedang memeriksa pasien.");
+}
+
+class Guru extends Pekerja {
+  Guru(String nama) : super(nama);
+  @override
+  void bekerja() => print("$nama sedang mengajar di kelas.");
+}
+
+class Komputer { void boot() {} }
+class Kamera { void ambilFoto() {} }
+class Telepon { void panggil() {} }
+
+class Tablet implements Komputer, Kamera, Telepon {
+  @override void boot() => print("Tablet booting...");
+  @override void ambilFoto() => print("Tablet mengambil foto...");
+  @override void panggil() => print("Tablet melakukan panggilan...");
+}
+
+void main() {
+  // Contoh Penggunaan:
+  print("Faktorial 5: ${MathUtils.factorial(5)}"); // 120
+  print("Apakah 7 prima?: ${MathUtils.isPrime(7)}"); // true
+  print("Bulatkan 3.14159: ${MathUtils.roundDouble(3.14159, 2)}"); // 3.14
+  print("Acak Int (1-10): ${MathUtils.randomInt(1, 10)}");
+  print("Rata-rata [10, 20, 30]: ${MathUtils.rataRata([10, 20, 30])}"); // 20.0
+  print("Median [1, 5, 2, 8]: ${MathUtils.median([1, 5, 2, 8])}"); // 3.5
+
+  List<Pekerja> daftarPekerja = [
+    Programmer("Budi"), 
+    Dokter("Siti"), 
+    Guru("Andi")
+  ];
+
+  for (var p in daftarPekerja) {
+    p.info();
+    p.bekerja();
+  }
+}
